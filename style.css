@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+}
+.intro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 0;
+    height: 25%;
+}
+.gameGrid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex; 
+}
+.block {
+    padding: 70px;
+}
+
+.gameGrid .firstRow, .gameGrid .secondRow {
+    border-bottom: black 3px solid;
+}
+
+.row div:nth-child(1), .row div:nth-child(2) {
+    border-right: black 3px solid;
+}
