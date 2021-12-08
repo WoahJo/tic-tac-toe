@@ -28,7 +28,10 @@ body {
     display: flex; 
 }
 .block {
-    padding: 70px;
+    padding: 1rem;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }
 
 .gameGrid .firstRow, .gameGrid .secondRow {
