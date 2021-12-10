@@ -14,6 +14,18 @@
             <p class="description">Tells you how to play the game and interact with the UI</p>
             <div class="buttons">
                 <button class="new gameButton" type="button">New game</button>
+                <div class="modal">
+                    <form id="playInfo" name="playeForm">
+                        <label for="playerName">Name:</label>
+                        <input type="text" class="inputName" name="playerName" required maxlength="20" placeholder="Name">
+                        <label for="playerSymb">Type a character to represent your moves:</label>
+                        <input type="text" class="playerSymb" name="playerSymb" required maxlength="1" placeholder="Symbol (0-9, a-z, etc.)">
+                        <div class="actionButtons">
+                            <button class="subForm" type="submit">Done!</button>
+                            <button class="cancelForm">Cancel</button>
+                        </div>
+                    </form>
+                </div>
                 <button class="reset gameButton" type="button">Reset</button>
             </div>
         </div>
