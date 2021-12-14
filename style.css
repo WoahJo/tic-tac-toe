@@ -32,6 +32,9 @@ body {
     width: 100px;
     height: 100px;
     cursor: pointer;
+    font-size: 5rem;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace, sans-serif;
 }
 
 .gameGrid .firstRow, .gameGrid .secondRow {
