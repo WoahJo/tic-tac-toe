@@ -9,13 +9,33 @@ const game = (function(){
     const seven = document.querySelector('.seven');
     const eight = document.querySelector('.eight');
     const nine = document.querySelector('.nine');
+    let marker;
     let gameBoard = {
         field: [
-            [one.textContent = "o", two.textContent = "x", three.textContent = "o"], 
-            [four.textContent = "x", five.textContent = "x", six.textContent = "o"], 
-            [seven.textContent = "o", eight.textContent = "o", nine.textContent = "x"]
-        ]
+            [one, two, three.textContent], 
+            [four, five, six], 
+            [seven, eight, nine]
+        ],
+        turnChange: function(e){
+            e.target.textContent = marker;
+            gameGrid.classList.toggle('p1turn');
+        },
+        playerTurns: function(){
+            gameGrid.addEventListener('click', function(e){
+                if(marker == "x" || gameGrid.classList.contains('p1turn')){
+                    marker = "x";
+                    gameBoard.turnChange(e);
+                    marker = "o";
+                }
+                else if(marker == "o"){
+                    gameBoard.turnChange(e);
+                    marker = "x";
+                }
+            })
+        }        
     };
+    gameBoard.playerTurns();
+    return { gameBoard }
 })();
 
 const createPlayer = (playerName, playerSymbol) => {
