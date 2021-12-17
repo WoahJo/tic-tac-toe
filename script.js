@@ -10,24 +10,39 @@ const game = (function(){
     const eight = document.querySelector('.eight');
     const nine = document.querySelector('.nine');
     let marker;
+    let redo = false;
     let gameBoard = {
         field: [
-            [one, two, three.textContent], 
+            [one, two, three], 
             [four, five, six], 
             [seven, eight, nine]
         ],
+        noRoom: function(e){
+            if(!e.target.textContent == ""){
+                alert("No space!");
+                return true;
+            }
+        },
         turnChange: function(e){
-            e.target.textContent = marker;
+            gameBoard.noRoom(e)
+            let square = e.target;
+            square.textContent = marker;
+            for(let i = 0; i < gameBoard.field.length; i++){
+                let arrayCheck = gameBoard.field[i].indexOf(e.target);
+                if(arrayCheck > -1){
+                    gameBoard.field[i][arrayCheck] = marker;
+                }
+            }
             gameGrid.classList.toggle('p1turn');
         },
         playerTurns: function(){
             gameGrid.addEventListener('click', function(e){
-                if(marker == "x" || gameGrid.classList.contains('p1turn')){
+                if((marker == "x" && !gameBoard.noRoom(e))|| (gameGrid.classList.contains('p1turn') && !gameBoard.noRoom(e))){
                     marker = "x";
                     gameBoard.turnChange(e);
                     marker = "o";
                 }
-                else if(marker == "o"){
+                else if(marker == "o" && !gameBoard.noRoom(e)){
                     gameBoard.turnChange(e);
                     marker = "x";
                 }
