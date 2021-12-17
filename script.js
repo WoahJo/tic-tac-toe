@@ -10,7 +10,7 @@ const game = (function(){
     const eight = document.querySelector('.eight');
     const nine = document.querySelector('.nine');
     let marker;
-    let redo = false;
+    
     let gameBoard = {
         field: [
             [one, two, three], 
