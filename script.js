@@ -9,30 +9,42 @@ const game = (function(){
     const seven = document.querySelector('.seven');
     const eight = document.querySelector('.eight');
     const nine = document.querySelector('.nine');
+    const resetGame = document.querySelector('.reset');
     let marker;
-    
+
     let gameBoard = {
         field: [
             [one, two, three], 
             [four, five, six], 
             [seven, eight, nine]
         ],
+        reset: function(){
+            resetGame.addEventListener('click', function(){
+                if(!gameGrid.classList.contains('p1turn')){
+                    gameGrid.classList.toggle('p1turn');
+                }
+                const blocks = gameGrid.children;
+                for(let i = 0; i < blocks.length; i++){
+                    for(let j = 0; j < blocks[i].children.length; j++){
+                        blocks[i].children[j].textContent = "";
+                    }
+                }                
+            });
+        },
         noRoom: function(e){
             if(!e.target.textContent == ""){
-                alert("No space!");
                 return true;
             }
         },
         turnChange: function(e){
-            gameBoard.noRoom(e)
             let square = e.target;
             square.textContent = marker;
-            for(let i = 0; i < gameBoard.field.length; i++){
-                let arrayCheck = gameBoard.field[i].indexOf(e.target);
-                if(arrayCheck > -1){
-                    gameBoard.field[i][arrayCheck] = marker;
-                }
-            }
+            // for(let i = 0; i < gameBoard.field.length; i++){
+            //     let arrayCheck = gameBoard.field[i].indexOf(e.target);
+            //     if(arrayCheck > -1){
+            //         gameBoard.field[i][arrayCheck] = marker;
+            //     }
+            // }
             gameGrid.classList.toggle('p1turn');
         },
         playerTurns: function(){
@@ -46,10 +58,14 @@ const game = (function(){
                     gameBoard.turnChange(e);
                     marker = "x";
                 }
+                else {
+                    alert('Occupied!');
+                }
             })
         }        
     };
     gameBoard.playerTurns();
+    gameBoard.reset();
     return { gameBoard }
 })();
 
