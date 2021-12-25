@@ -20,7 +20,18 @@ const game = (function(){
             [four, five, six], 
             [seven, eight, nine]
         ],
-        reset: function(){
+        resetFunct: function(){
+            if(!gameGrid.classList.contains('p1turn')){
+                gameGrid.classList.toggle('p1turn');
+            }
+            const blocks = gameGrid.children;
+            for(let i = 0; i < blocks.length; i++){
+                for(let j = 0; j < blocks[i].children.length; j++){
+                    blocks[i].children[j].textContent = "";
+                }
+            }
+        },
+        resetButton: function(){
             resetGame.addEventListener('click', function(){
                 if(!gameGrid.classList.contains('p1turn')){
                     gameGrid.classList.toggle('p1turn');
@@ -82,6 +93,7 @@ const game = (function(){
                     alert('Wiener');
                     counterO = 0;
                     counterX = 0;
+                    gameBoard.resetFunct();
                 }
                 else{
                     counterO = 0;
@@ -90,7 +102,7 @@ const game = (function(){
             }
         }
     };
-    gameBoard.reset();
+    gameBoard.resetButton();
     gameBoard.winner();
     gameBoard.playerTurns();
     return { gameBoard }
