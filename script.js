@@ -11,6 +11,8 @@ const game = (function(){
     const nine = document.querySelector('.nine');
     const resetGame = document.querySelector('.reset');
     let marker;
+    let counterX = 0;
+    let counterO = 0; 
 
     let gameBoard = {
         field: [
@@ -61,11 +63,36 @@ const game = (function(){
                 else {
                     alert('Occupied!');
                 }
-            })
-        }        
+                gameBoard.winner();
+            });
+
+        }, 
+        winner: function(){
+            const row = gameGrid.children; 
+            for(let i = 0; i < row.length; i++){
+                for(let j = 0; j < row[i].children.length; j++){
+                    if(row[i].children[j].textContent == "x"){
+                        counterX ++; 
+                    }
+                    if(row[i].children[j].textContent == "o"){
+                        counterO ++;
+                    }
+                }
+                if(counterX == 3 || counterO == 3){
+                    alert('Wiener');
+                    counterO = 0;
+                    counterX = 0;
+                }
+                else{
+                    counterO = 0;
+                    counterX = 0;
+                }
+            }
+        }
     };
-    gameBoard.playerTurns();
     gameBoard.reset();
+    gameBoard.winner();
+    gameBoard.playerTurns();
     return { gameBoard }
 })();
 
