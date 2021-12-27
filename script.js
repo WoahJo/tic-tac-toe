@@ -76,8 +76,19 @@ const game = (function(){
                 }
                 gameBoard.winner();
             });
-
         }, 
+        callWinner: function(){
+            if(counterX == 3 || counterO == 3){
+                alert('Wiener');
+                counterO = 0;
+                counterX = 0;
+                gameBoard.resetFunct();
+            }
+            else{
+                counterO = 0;
+                counterX = 0;
+            }
+        },
         winner: function(){
             const row = gameGrid.children; 
             for(let i = 0; i < row.length; i++){
@@ -89,16 +100,15 @@ const game = (function(){
                         counterO ++;
                     }
                 }
-                if(counterX == 3 || counterO == 3){
-                    alert('Wiener');
-                    counterO = 0;
-                    counterX = 0;
-                    gameBoard.resetFunct();
+                gameBoard.callWinner();
+            }
+            for(let i = 0; i < row.length; i++){
+                for(let j = 0; j < row[i].children.length; j++){
+                    if(row[j].children[i].textContent == "x"){
+                        counterX ++;
+                    }
                 }
-                else{
-                    counterO = 0;
-                    counterX = 0;
-                }
+                gameBoard.callWinner();
             }
         }
     };
