@@ -107,9 +107,35 @@ const game = (function(){
                     if(row[j].children[i].textContent == "x"){
                         counterX ++;
                     }
+                    if(row[j].children[i].textContent == "o"){
+                        counterO ++;
+                    }
                 }
                 gameBoard.callWinner();
             }
+            for(let i = 0; i < row.length; i++){
+                if(row[i].children[i].textContent == "x"){
+                    counterX ++;
+                }
+                if(row[i].children[i].textContent == "o"){
+                    counterO ++;
+                }
+            }
+            gameBoard.callWinner();
+
+            let i = 0;
+            let j = 2; 
+            while(i < 3 && j >= 0){
+                if(row[i].children[j].textContent == "x"){
+                    counterX ++;
+                }
+                if(row[i].children[j].textContent == "o"){
+                    counterO ++;
+                }
+                i ++;
+                j --;
+            }
+            gameBoard.callWinner();
         }
     };
     gameBoard.resetButton();
