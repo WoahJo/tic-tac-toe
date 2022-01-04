@@ -12,9 +12,11 @@ body {
     align-items: center;
     flex-direction: column;
     padding-top: 15px;
-    padding-bottom: 40px;
+    padding-bottom: 25px;
     height: 25%;
 }
+
+
 .gameGrid {
     display: flex;
     flex-direction: column;
@@ -85,4 +87,22 @@ body {
 #playInfo input {
     width: 70%;
     height: 2rem;
+}
+
+.scoreboard{
+    display: none;
+    justify-content: center ;
+    flex-direction: row;
+    margin: 1.1rem;
+}
+
+.p1score, .p2score {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.5rem;
+}
+
+.p1score {
+    margin-right: 2rem;
 }

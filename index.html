@@ -16,17 +16,27 @@
                 <button class="new gameButton" type="button">New game</button>
                 <div class="modal">
                     <form id="playInfo" name="playerForm">
-                        <label for="playerName">Name:</label>
-                        <input type="text" class="inputName" name="playerName" required maxlength="20" placeholder="Name">
-                        <label for="playerSymb">Type a character to represent your moves:</label>
-                        <input type="text" class="playerSymb" name="playerSymb" required maxlength="1" placeholder="Symbol (0-9, a-z, etc.)">
+                        <label for="playerName">Player 1 Name:</label>
+                        <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="Name">
+                        <label for="playerSymb">Player 2 Name:</label>
+                        <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="Name">
                         <div class="actionButtons">
-                            <button class="subForm" type="submit">Done!</button>
-                            <button class="cancelForm">Cancel</button>
+                            <button class="subForm" type="button">Done!</button>
+                            <button class="cancelForm" type="button">Cancel</button>
                         </div>
                     </form>
                 </div>
                 <button class="reset gameButton" type="button">Reset</button>
+            </div>
+        </div>
+        <div class="scoreboard">
+            <div class="p1score">
+                <div class="p1NameDisplay"></div>
+                <div class="p1ScoreDisplay"></div>
+            </div>
+            <div class="p2score">
+                <div class="p2NameDisplay"></div>
+                <div class="p2ScoreDisplay"></div>
             </div>
         </div>
         <div class="gameGrid p1turn">

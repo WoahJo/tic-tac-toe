@@ -11,9 +11,12 @@ const game = (function(){
     const nine = document.querySelector('.nine');
     const resetGame = document.querySelector('.reset');
     let marker;
-    let counterX = 0;
-    let counterO = 0; 
-
+    let counterX = 0; //p1marks
+    let counterO = 0; //p2marks
+    let players = {
+        player1: "", 
+        player2: ""
+    }
     let gameBoard = {
         field: [
             [one, two, three], 
@@ -36,12 +39,7 @@ const game = (function(){
                 if(!gameGrid.classList.contains('p1turn')){
                     gameGrid.classList.toggle('p1turn');
                 }
-                const blocks = gameGrid.children;
-                for(let i = 0; i < blocks.length; i++){
-                    for(let j = 0; j < blocks[i].children.length; j++){
-                        blocks[i].children[j].textContent = "";
-                    }
-                }                
+                gameBoard.resetFunct();              
             });
         },
         noRoom: function(e){
@@ -62,7 +60,7 @@ const game = (function(){
         },
         playerTurns: function(){
             gameGrid.addEventListener('click', function(e){
-                if((marker == "x" && !gameBoard.noRoom(e))|| (gameGrid.classList.contains('p1turn') && !gameBoard.noRoom(e))){
+                if((marker == "x" && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
                     marker = "x";
                     gameBoard.turnChange(e);
                     marker = "o";
@@ -78,11 +76,14 @@ const game = (function(){
             });
         }, 
         callWinner: function(){
-            if(counterX == 3 || counterO == 3){
-                alert('Wiener');
+            if(counterX == 3 ){
+                alert(players.player1.getName() + ' is a Wiener!');
                 counterO = 0;
                 counterX = 0;
                 gameBoard.resetFunct();
+            }
+            else if(counterO == 3){
+
             }
             else{
                 counterO = 0;
@@ -141,45 +142,50 @@ const game = (function(){
     gameBoard.resetButton();
     gameBoard.winner();
     gameBoard.playerTurns();
-    return { gameBoard }
+    return { gameBoard, players }
 })();
 
 const createPlayer = (playerName, playerSymbol) => {
-    const info = {};
-    info.playerName = playerName;
-    info.symbol = playerSymbol;
-
-    return{info}
+    let score = 0;
+    const getScore = () => score;
+    const getName = () => playerName;
+    const getSymb = () => playerSymbol;
+    const addPoint = () => score ++; 
+    
+    return {getName, getSymb, addPoint, getScore};
 };
-
-const playerStore = (function(){
-    const submit = document.querySelector('.subForm');
-    const setPlayer = () => {
-        const pName = document.querySelector('.inputName').value;
-        const pSymb = document.querySelector('.playerSymb').value;
-        const player1 = createPlayer(pName, pSymb);
-        const p1Name = player1.info["playerName"];
-        const p1Symb = player1.info["symbol"];
-        
-        return {p1Name, p1Symb}
-    };
-    submit.addEventListener('click', setPlayer);
-    return {setPlayer}
-    
-    
-})();
 
 
 const eventControl = (function(){
+    const scoreboard = document.querySelector('.scoreboard');
     const newGame = document.querySelector('.new');
     const modal = document.querySelector('.modal');
+    const sub = document.querySelector('.subForm')
+    const form = document.getElementById('playInfo');
+    const close = document.querySelector('.cancelForm');
+    
     newGame.addEventListener('click', function(){
         modal.style.display = "block";
     });
-
-    const close = document.querySelector('.cancelForm');
+    
     close.addEventListener('click', function(){
         modal.style.display = "none";
+    });
+    
+    sub.addEventListener('click', function(){
+        scoreboard.style.display = "flex";
+        const formp1 = document.querySelector('.p1Name').value;
+        const formp2 = document.querySelector('.p2Name').value;
+        const p1Name = document.querySelector('.p1NameDisplay');
+        const p2NAme = document.querySelector('.p2NameDisplay');
+        
+        p1Name.textContent = formp1 + ": ";
+        p2NAme.textContent = formp2 + ": ";
+        game.players.player1 = createPlayer(formp1, "x");
+        game.players.player2 = createPlayer(formp2, "o");
+        form.reset();
+        modal.style.display = "none";
+
     });
 
 })();
