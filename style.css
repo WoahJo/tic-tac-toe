@@ -106,3 +106,7 @@ body {
 .p1score {
     margin-right: 2rem;
 }
+
+.p1NameDisplay, .p2NameDisplay{ 
+    margin-right: 10px;
+}

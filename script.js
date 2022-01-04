@@ -1,3 +1,24 @@
+const Display = (function(){
+    const p1Score = document.querySelector('.p1ScoreDisplay');
+    const p2Score = document.querySelector('.p2ScoreDisplay');
+    const p1Name = document.querySelector('.p1NameDisplay');
+    const p2Name = document.querySelector('.p2NameDisplay');
+    const space = document.createTextNode("\u00A0");
+        
+
+    const showNames = (p1, p2) => {
+        p1Name.textContent = p1 + ':';
+        p2Name.textContent = p2 + ':';
+    };
+
+    const updateScore = (p1score, p2score) => {
+        p1Score.textContent = p1score; 
+        p2Score.textContent = p2score; 
+    };
+
+    return {showNames, updateScore}
+})();
+
 const game = (function(){
     const gameGrid = document.querySelector('.gameGrid');
     const one = document.querySelector('.one');
@@ -10,6 +31,7 @@ const game = (function(){
     const eight = document.querySelector('.eight');
     const nine = document.querySelector('.nine');
     const resetGame = document.querySelector('.reset');
+    const scoreboard = document.querySelector('.scoreboard');
     let marker;
     let counterX = 0; //p1marks
     let counterO = 0; //p2marks
@@ -60,6 +82,10 @@ const game = (function(){
         },
         playerTurns: function(){
             gameGrid.addEventListener('click', function(e){
+                if(scoreboard.style.display == ""){
+                    alert('Press "New Game" and enter names.');
+                    return false;
+                }
                 if((marker == "x" && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
                     marker = "x";
                     gameBoard.turnChange(e);
@@ -75,15 +101,22 @@ const game = (function(){
                 gameBoard.winner();
             });
         }, 
+        winReset: function(){
+            counterO = 0;
+            counterX = 0;
+            Display.updateScore(players.player1.getScore(), players.player2.getScore());
+            gameBoard.resetFunct();
+        },
         callWinner: function(){
             if(counterX == 3 ){
                 alert(players.player1.getName() + ' is a Wiener!');
-                counterO = 0;
-                counterX = 0;
-                gameBoard.resetFunct();
+                players.player1.addPoint();
+                gameBoard.winReset();
             }
             else if(counterO == 3){
-
+                alert(players.player2.getName() + ' is a Wiener!');
+                players.player2.addPoint();
+                gameBoard.winReset();
             }
             else{
                 counterO = 0;
@@ -176,13 +209,12 @@ const eventControl = (function(){
         scoreboard.style.display = "flex";
         const formp1 = document.querySelector('.p1Name').value;
         const formp2 = document.querySelector('.p2Name').value;
-        const p1Name = document.querySelector('.p1NameDisplay');
-        const p2NAme = document.querySelector('.p2NameDisplay');
+        const players = game.players;
         
-        p1Name.textContent = formp1 + ": ";
-        p2NAme.textContent = formp2 + ": ";
-        game.players.player1 = createPlayer(formp1, "x");
-        game.players.player2 = createPlayer(formp2, "o");
+        Display.showNames(formp1, formp2);
+        players.player1 = createPlayer(formp1, "x");
+        players.player2 = createPlayer(formp2, "o");
+        Display.updateScore(players.player1.getScore(), players.player2.getScore());
         form.reset();
         modal.style.display = "none";
 
