@@ -1,11 +1,21 @@
-body {
+body, html {
+    height: 100%;
     margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
 }
 
 #container {
     display: flex;
     flex-direction: column;
 }
+
 .intro {
     display: flex;
     justify-content: center;
@@ -51,9 +61,11 @@ body {
 .footer {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 40px;
     padding: 10px;
     background-color: bisque;
+
 }
 
 .modal {
@@ -84,9 +96,15 @@ body {
     box-shadow: 0 5px 10px 0 rgba(47, 47, 48, 0.616), 0 5px 20px 0 rgb(47, 47, 48);
 }
 
-#playInfo input {
+#playInfo input{
     width: 70%;
     height: 2rem;
+    font-size: 1rem;
+    padding: 5px;
+}
+
+#playInfo input.marker{ 
+    width: 10%;
 }
 
 .scoreboard{

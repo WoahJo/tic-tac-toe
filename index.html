@@ -16,10 +16,14 @@
                 <button class="new gameButton" type="button">New game</button>
                 <div class="modal">
                     <form id="playInfo" name="playerForm">
-                        <label for="playerName">Player 1 Name:</label>
-                        <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="Name">
-                        <label for="playerSymb">Player 2 Name:</label>
-                        <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="Name">
+                        <label for="player1Name">Player 1 Name:</label>
+                        <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="P1's name">
+                        <label for="player1Mark">Player 1's Marker:</label>
+                        <input type="text" class="p1marker marker" name="player1Mark" required maxlength="1" placeholder="x">
+                        <label for="player2Name">Player 2 Name:</label>
+                        <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="P2's name">
+                        <label for="player2Mark">Player 2's Marker:</label>
+                        <input type="text" class="p2marker marker" name="player2Mark" maxlength="1" placeholder="o">
                         <div class="actionButtons">
                             <button class="subForm" type="button">Done!</button>
                             <button class="cancelForm" type="button">Cancel</button>
@@ -56,8 +60,8 @@
                 <div class="nine block"></div>
             </div> 
         </div>
-        <div class="footer">Coded by WoahJo</div>
     </div>
-    <script src="script.js"></script>
+    <div class="footer">Coded by WoahJo</div>
 </body>
+<script src="script.js"></script>
 </html>

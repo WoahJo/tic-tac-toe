@@ -86,14 +86,14 @@ const game = (function(){
                     alert('Press "New Game" and enter names.');
                     return false;
                 }
-                if((marker == "x" && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
-                    marker = "x";
+                if((marker == players.player1.getSymb() && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
+                    marker = players.player1.getSymb();
                     gameBoard.turnChange(e);
-                    marker = "o";
+                    marker = players.player2.getSymb();
                 }
-                else if(marker == "o" && !gameBoard.noRoom(e)){
+                else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e)){
                     gameBoard.turnChange(e);
-                    marker = "x";
+                    marker = players.player1.getSymb();
                 }
                 else {
                     alert('Occupied!');
@@ -127,10 +127,10 @@ const game = (function(){
             const row = gameGrid.children; 
             for(let i = 0; i < row.length; i++){
                 for(let j = 0; j < row[i].children.length; j++){
-                    if(row[i].children[j].textContent == "x"){
+                    if(row[i].children[j].textContent == players.player1.getSymb()){
                         counterX ++; 
                     }
-                    if(row[i].children[j].textContent == "o"){
+                    if(row[i].children[j].textContent == players.player2.getSymb()){
                         counterO ++;
                     }
                 }
@@ -138,20 +138,20 @@ const game = (function(){
             }
             for(let i = 0; i < row.length; i++){
                 for(let j = 0; j < row[i].children.length; j++){
-                    if(row[j].children[i].textContent == "x"){
+                    if(row[j].children[i].textContent == players.player1.getSymb()){
                         counterX ++;
                     }
-                    if(row[j].children[i].textContent == "o"){
+                    if(row[j].children[i].textContent == players.player2.getSymb()){
                         counterO ++;
                     }
                 }
                 gameBoard.callWinner();
             }
             for(let i = 0; i < row.length; i++){
-                if(row[i].children[i].textContent == "x"){
+                if(row[i].children[i].textContent == players.player1.getSymb()){
                     counterX ++;
                 }
-                if(row[i].children[i].textContent == "o"){
+                if(row[i].children[i].textContent == players.player2.getSymb()){
                     counterO ++;
                 }
             }
@@ -160,10 +160,10 @@ const game = (function(){
             let i = 0;
             let j = 2; 
             while(i < 3 && j >= 0){
-                if(row[i].children[j].textContent == "x"){
+                if(row[i].children[j].textContent == players.player1.getSymb()){
                     counterX ++;
                 }
-                if(row[i].children[j].textContent == "o"){
+                if(row[i].children[j].textContent == players.player2.getSymb()){
                     counterO ++;
                 }
                 i ++;
@@ -172,8 +172,6 @@ const game = (function(){
             gameBoard.callWinner();
         }
     };
-    gameBoard.resetButton();
-    gameBoard.winner();
     gameBoard.playerTurns();
     return { gameBoard, players }
 })();
@@ -209,11 +207,13 @@ const eventControl = (function(){
         scoreboard.style.display = "flex";
         const formp1 = document.querySelector('.p1Name').value;
         const formp2 = document.querySelector('.p2Name').value;
+        const formp1mark = document.querySelector('.p1marker').value;
+        const formp2mark = document.querySelector('.p2marker').value;
         const players = game.players;
         
         Display.showNames(formp1, formp2);
-        players.player1 = createPlayer(formp1, "x");
-        players.player2 = createPlayer(formp2, "o");
+        players.player1 = createPlayer(formp1, formp1mark);
+        players.player2 = createPlayer(formp2, formp2mark);
         Display.updateScore(players.player1.getScore(), players.player2.getScore());
         form.reset();
         modal.style.display = "none";
