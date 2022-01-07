@@ -3,7 +3,6 @@ const Display = (function(){
     const p2Score = document.querySelector('.p2ScoreDisplay');
     const p1Name = document.querySelector('.p1NameDisplay');
     const p2Name = document.querySelector('.p2NameDisplay');
-    const space = document.createTextNode("\u00A0");
         
 
     const showNames = (p1, p2) => {
@@ -35,6 +34,7 @@ const game = (function(){
     let marker;
     let counterX = 0; //p1marks
     let counterO = 0; //p2marks
+    let isWinner;
     let players = {
         player1: "", 
         player2: ""
@@ -106,16 +106,19 @@ const game = (function(){
             counterX = 0;
             Display.updateScore(players.player1.getScore(), players.player2.getScore());
             gameBoard.resetFunct();
+            isWinner = false;
         },
         callWinner: function(){
             if(counterX == 3 ){
                 alert(players.player1.getName() + ' is a Wiener!');
                 players.player1.addPoint();
+                isWinner = true;
                 gameBoard.winReset();
             }
             else if(counterO == 3){
                 alert(players.player2.getName() + ' is a Wiener!');
                 players.player2.addPoint();
+                isWinner = true;
                 gameBoard.winReset();
             }
             else{
@@ -156,7 +159,7 @@ const game = (function(){
                 }
             }
             gameBoard.callWinner();
-
+            
             let i = 0;
             let j = 2; 
             while(i < 3 && j >= 0){
@@ -170,9 +173,28 @@ const game = (function(){
                 j --;
             }
             gameBoard.callWinner();
+            
+            let tieCounter = 0;
+            for(let i = 0; i < row.length; i++){
+                for(let j = 0; j < row[i].children.length; j++){
+                    if(row[i].children[j].textContent == players.player1.getSymb()){
+                        tieCounter ++; 
+                    }
+                    if(row[i].children[j].textContent == players.player2.getSymb()){
+                        tieCounter ++;
+                    }
+                }
+            }
+
+            if(tieCounter == 9 && !isWinner){
+                alert('Tie!');
+                gameBoard.winReset();
+            }
+            
         }
     };
     gameBoard.playerTurns();
+    gameBoard.resetButton();
     return { gameBoard, players }
 })();
 
@@ -207,16 +229,38 @@ const eventControl = (function(){
         scoreboard.style.display = "flex";
         const formp1 = document.querySelector('.p1Name').value;
         const formp2 = document.querySelector('.p2Name').value;
-        const formp1mark = document.querySelector('.p1marker').value;
-        const formp2mark = document.querySelector('.p2marker').value;
+        let formp1mark = document.querySelector('.p1marker').value;
+        let formp2mark = document.querySelector('.p2marker').value;
+        const alertDupl = document.querySelectorAll('.duplicate');
         const players = game.players;
-        
-        Display.showNames(formp1, formp2);
-        players.player1 = createPlayer(formp1, formp1mark);
-        players.player2 = createPlayer(formp2, formp2mark);
-        Display.updateScore(players.player1.getScore(), players.player2.getScore());
-        form.reset();
-        modal.style.display = "none";
+
+        if(!form.checkValidity()){
+            form.reportValidity();
+            return false;
+        }
+        if(formp1mark == ""){
+            formp1mark = "x";
+        }
+        if(formp2mark == ""){
+            formp2mark = "o";
+        }
+        if(formp1mark === formp2mark){
+            alertDupl[0].style.display = "inline";
+            alertDupl[1].style.display = "inline";
+            formp1mark = ""; 
+            formp2mark = "";
+            return false;
+        }
+        else{
+            Display.showNames(formp1, formp2);
+            players.player1 = createPlayer(formp1, formp1mark);
+            players.player2 = createPlayer(formp2, formp2mark);
+            Display.updateScore(players.player1.getScore(), players.player2.getScore());
+            form.reset();
+            modal.style.display = "none";
+            alertDupl[0].style.display = "none";
+            alertDupl[1].style.display = "none";
+        }
 
     });
 

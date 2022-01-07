@@ -16,17 +16,23 @@
                 <button class="new gameButton" type="button">New game</button>
                 <div class="modal">
                     <form id="playInfo" name="playerForm">
-                        <label for="player1Name">Player 1 Name:</label>
-                        <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="P1's name">
-                        <label for="player1Mark">Player 1's Marker:</label>
-                        <input type="text" class="p1marker marker" name="player1Mark" required maxlength="1" placeholder="x">
-                        <label for="player2Name">Player 2 Name:</label>
-                        <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="P2's name">
-                        <label for="player2Mark">Player 2's Marker:</label>
-                        <input type="text" class="p2marker marker" name="player2Mark" maxlength="1" placeholder="o">
+                        <div class="playerAdd">
+                            <label for="player1Name">P1's Name:</label>
+                            <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="P1's name">
+                            <label for="player2Name">P2's Name:</label>
+                            <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="P2's name">
+                        </div>
+                        <div class="playerAdd">
+                            
+                            <label for="player1Mark">Marker:<span class="duplicate"> Must be different.</span></label>
+                            <input type="text" class="p1marker marker" name="player1Mark" maxlength="1" placeholder="x">
+                            
+                            <label for="player2Mark">Marker:<span class="duplicate"> Must be different.</span></label>
+                            <input type="text" class="p2marker marker" name="player2Mark" maxlength="1" placeholder="o">
+                        </div>
                         <div class="actionButtons">
-                            <button class="subForm" type="button">Done!</button>
-                            <button class="cancelForm" type="button">Cancel</button>
+                            <button class="subForm fButton" type="button">Done!</button>
+                            <button class="cancelForm fButton" type="button">Cancel</button>
                         </div>
                     </form>
                 </div>

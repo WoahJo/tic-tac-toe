@@ -84,13 +84,13 @@ body {
 #playInfo {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
     align-items: flex-start;
     background-color: white;
     margin: auto;
     padding: 20px;
-    width: 30%;
+    width: 40%;
     row-gap: 10px;
     font-size: 1.2rem;
     box-shadow: 0 5px 10px 0 rgba(47, 47, 48, 0.616), 0 5px 20px 0 rgb(47, 47, 48);
@@ -105,6 +105,30 @@ body {
 
 #playInfo input.marker{ 
     width: 10%;
+}
+.duplicate {
+    display: none;
+    color: red;
+    font-size: 0.8rem;
+    font-family: sans-serif;
+}
+
+.playerAdd {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: auto;
+}
+
+.fButton {
+    height: 40px;
+    width: 80px;
 }
 
 .scoreboard{
