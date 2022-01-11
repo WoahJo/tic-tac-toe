@@ -3,7 +3,9 @@ const Display = (function(){
     const p2Score = document.querySelector('.p2ScoreDisplay');
     const p1Name = document.querySelector('.p1NameDisplay');
     const p2Name = document.querySelector('.p2NameDisplay');
-        
+    const announceText = document.querySelector('.cardText');
+    const announce = document.querySelector('.announce');
+
 
     const showNames = (p1, p2) => {
         p1Name.textContent = p1 + ':';
@@ -15,7 +17,17 @@ const Display = (function(){
         p2Score.textContent = p2score; 
     };
 
-    return {showNames, updateScore}
+    const announceWinner = (player) => {
+        announceText.textContent = player + " wins!";
+        announce.style.display = "block";
+
+    }
+    const announceTie = () => {
+        announceText.textContent = "It's a tie.";
+        announce.style.display = "block";
+    }
+
+    return {showNames, updateScore, announceWinner, announceTie}
 })();
 
 const game = (function(){
@@ -110,13 +122,15 @@ const game = (function(){
         },
         callWinner: function(){
             if(counterX == 3 ){
-                alert(players.player1.getName() + ' is a Wiener!');
+                // alert(players.player1.getName() + ' is a Wiener!');
+                Display.announceWinner(players.player1.getName());
                 players.player1.addPoint();
                 isWinner = true;
                 gameBoard.winReset();
             }
             else if(counterO == 3){
-                alert(players.player2.getName() + ' is a Wiener!');
+                // alert(players.player2.getName() + ' is a Wiener!');
+                Display.announceWinner(players.player2.getName());
                 players.player2.addPoint();
                 isWinner = true;
                 gameBoard.winReset();
@@ -187,7 +201,8 @@ const game = (function(){
             }
 
             if(tieCounter == 9 && !isWinner){
-                alert('Tie!');
+                // alert('Tie!');
+                Display.announceTie();
                 gameBoard.winReset();
             }
             
@@ -216,13 +231,20 @@ const eventControl = (function(){
     const sub = document.querySelector('.subForm')
     const form = document.getElementById('playInfo');
     const close = document.querySelector('.cancelForm');
+    const announce = document.querySelector('.announce');
+    const closeAnnounce = document.querySelector('.close'); 
     
     newGame.addEventListener('click', function(){
         modal.style.display = "block";
     });
     
     close.addEventListener('click', function(){
+        form.reset();
         modal.style.display = "none";
+    });
+
+    closeAnnounce.addEventListener('click', function(){
+        announce.style.display = "none";
     });
     
     sub.addEventListener('click', function(){
