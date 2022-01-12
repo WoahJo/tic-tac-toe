@@ -16,19 +16,21 @@
                 <button class="new gameButton" type="button">New game</button>
                 <div class="modal">
                     <form id="playInfo" name="playerForm">
+                        <div class="playMode"><input type="checkbox" class="playCP"> vs. Comp?</div>
                         <div class="playerAdd">
                             <label for="player1Name">P1's Name:<span class="required">*</span></label>
                             <input type="text" class="p1Name" name="player1Name" required maxlength="20" placeholder="P1's name">
-                            <label for="player2Name">P2's Name:<span class="required">*</span></label>
-                            <input type="text" class="p2Name" name="player2Name" required maxlength="20" placeholder="P2's name">
+                            <label for="player2Name" class="player2">P2's Name:<span class="required">*</span></label>
+                            <div class="george">The computer chooses the marker 'C'.</div>
+                            <input type="text" class="p2Name player2" name="player2Name" required maxlength="20" placeholder="P2's name">
                         </div>
                         <div class="playerAdd">
                             
                             <label for="player1Mark">Marker:<span class="duplicate"> Must be different.</span></label>
                             <input type="text" class="p1marker marker" name="player1Mark" maxlength="1" placeholder="x">
                             
-                            <label for="player2Mark">Marker:<span class="duplicate"> Must be different.</span></label>
-                            <input type="text" class="p2marker marker" name="player2Mark" maxlength="1" placeholder="o">
+                            <label for="player2Mark" class="player2">Marker:<span class="duplicate"> Must be different.</span></label>
+                            <input type="text" class="p2marker marker player2" name="player2Mark" maxlength="1" placeholder="o">
                         </div>
                         <div class="actionButtons">
                             <button class="subForm fButton" type="button">Done!</button>

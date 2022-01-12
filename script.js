@@ -101,10 +101,12 @@ const game = (function(){
                 if((marker == players.player1.getSymb() && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
                     marker = players.player1.getSymb();
                     gameBoard.turnChange(e);
+                    e.target.style.color = "red";
                     marker = players.player2.getSymb();
                 }
                 else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e)){
                     gameBoard.turnChange(e);
+                    e.target.style.color = "blue";
                     marker = players.player1.getSymb();
                 }
                 else {
@@ -201,7 +203,6 @@ const game = (function(){
             }
 
             if(tieCounter == 9 && !isWinner){
-                // alert('Tie!');
                 Display.announceTie();
                 gameBoard.winReset();
             }
@@ -232,19 +233,66 @@ const eventControl = (function(){
     const form = document.getElementById('playInfo');
     const close = document.querySelector('.cancelForm');
     const announce = document.querySelector('.announce');
+    const alertDupl = document.querySelectorAll('.duplicate');
     const closeAnnounce = document.querySelector('.close'); 
+    const cpuCheck = document.querySelector('.playCP');
+    const p2Fields = document.querySelectorAll('.player2');
+    let playCPU; 
+    const george = document.querySelector('.george');
+    
+    const restoreP2 = () => {
+        const p2NameReq = document.querySelector('.p2Name');
+        for(let i = 0; i < p2Fields.length; i++){
+            p2Fields[i].style.display = "inherit";
+            p2NameReq.required = true;
+        }
+    };
+    
+    const setPlayer = (p1name, p1symb, p2name, p2symb) => {
+        const players = game.players;
+        Display.showNames(p1name, p2name);
+        players.player1 = createPlayer(p1name, p1symb);
+        players.player2 = createPlayer(p2name, p2symb);
+        Display.updateScore(players.player1.getScore(), players.player2.getScore());
+        form.reset();
+        modal.style.display = "none";
+        alertDupl[0].style.display = "none";
+        alertDupl[1].style.display = "none";
+        
+    };
     
     newGame.addEventListener('click', function(){
         modal.style.display = "block";
+        form.reset();
+        restoreP2();
+        george.style.display = "none";
     });
     
     close.addEventListener('click', function(){
         form.reset();
         modal.style.display = "none";
+        alertDupl[0].style.display = "none";
+        alertDupl[1].style.display = "none";
     });
-
+    
     closeAnnounce.addEventListener('click', function(){
         announce.style.display = "none";
+    });
+    
+    cpuCheck.addEventListener('click', function(){
+        if(cpuCheck.checked){
+            const p2NameReq = document.querySelector('.p2Name');
+            for(let i = 0; i < p2Fields.length; i++){
+                p2Fields[i].style.display = "none";
+                p2NameReq.required = false;
+            }
+            george.style.display = "inherit";
+        }
+        else{
+            restoreP2();
+            george.style.display = "none";
+        }
+        
     });
     
     sub.addEventListener('click', function(){
@@ -253,9 +301,8 @@ const eventControl = (function(){
         const formp2 = document.querySelector('.p2Name').value;
         let formp1mark = document.querySelector('.p1marker').value;
         let formp2mark = document.querySelector('.p2marker').value;
-        const alertDupl = document.querySelectorAll('.duplicate');
-        const players = game.players;
-
+        const cpumark = "C";
+        
         if(!form.checkValidity()){
             form.reportValidity();
             return false;
@@ -263,10 +310,11 @@ const eventControl = (function(){
         if(formp1mark == ""){
             formp1mark = "x";
         }
-        if(formp2mark == ""){
+        if(formp2mark == "" && !cpuCheck.checked){
             formp2mark = "o";
         }
-        if(formp1mark === formp2mark){
+        
+        if(formp1mark === formp2mark || formp1mark === cpumark){
             alertDupl[0].style.display = "inline";
             alertDupl[1].style.display = "inline";
             formp1mark = ""; 
@@ -274,16 +322,13 @@ const eventControl = (function(){
             return false;
         }
         else{
-            Display.showNames(formp1, formp2);
-            players.player1 = createPlayer(formp1, formp1mark);
-            players.player2 = createPlayer(formp2, formp2mark);
-            Display.updateScore(players.player1.getScore(), players.player2.getScore());
-            form.reset();
-            modal.style.display = "none";
-            alertDupl[0].style.display = "none";
-            alertDupl[1].style.display = "none";
+            if(cpuCheck.checked){
+                formp2mark = "";
+                setPlayer(formp1, formp1mark, "George", "C");
+            }
+            else{setPlayer(formp1, formp1mark, formp2, formp2mark);}
         }
-
+        
     });
-
+    
 })();
