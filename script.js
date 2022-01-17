@@ -131,11 +131,6 @@ const game = (function(){
                     e.target.style.color = "blue";
                     marker = players.player1.getSymb();
                 }
-                // else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e) && players.player2cpu){
-                //     gameBoard.cpuTurn();
-                //     marker = players.player1.getSymb();
-                //     gameGrid.classList.toggle('p1turn');
-                // }
                 else if(gameBoard.noRoom(e)) {
                     alert('Occupied!');
                 }
