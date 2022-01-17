@@ -49,7 +49,8 @@ const game = (function(){
     let isWinner;
     let players = {
         player1: "", 
-        player2: ""
+        player2: "", 
+        player2cpu: false
     }
     let gameBoard = {
         field: [
@@ -65,6 +66,7 @@ const game = (function(){
             for(let i = 0; i < blocks.length; i++){
                 for(let j = 0; j < blocks[i].children.length; j++){
                     blocks[i].children[j].textContent = "";
+                    blocks[i].children[j].style.color = "black";
                 }
             }
         },
@@ -92,8 +94,21 @@ const game = (function(){
             // }
             gameGrid.classList.toggle('p1turn');
         },
+        cpuTurn: function(){
+            const row = gameGrid.children;
+            for(let i = 0; i < row.length; i++){
+                for(let j = 0; j < row[i].children.length; j++){
+                    if(row[i].children[j].textContent == ""){
+                        row[i].children[j].click();
+                        row[i].children[j].textContent = marker;
+                        return;
+                    }
+                }
+            }
+        },
         playerTurns: function(){
             gameGrid.addEventListener('click', function(e){
+                isWinner = false;
                 if(scoreboard.style.display == ""){
                     alert('Press "New Game" and enter names.');
                     return false;
@@ -103,13 +118,25 @@ const game = (function(){
                     gameBoard.turnChange(e);
                     e.target.style.color = "red";
                     marker = players.player2.getSymb();
+                    gameBoard.winner();
+                    if(players.player2cpu == true && !isWinner){
+                        gameBoard.cpuTurn();
+                        marker = players.player1.getSymb();
+                        gameGrid.classList.toggle('p1turn');
+                    }
+                    
                 }
-                else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e)){
+                else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e) && !players.player2cpu){
                     gameBoard.turnChange(e);
                     e.target.style.color = "blue";
                     marker = players.player1.getSymb();
                 }
-                else {
+                // else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e) && players.player2cpu){
+                //     gameBoard.cpuTurn();
+                //     marker = players.player1.getSymb();
+                //     gameGrid.classList.toggle('p1turn');
+                // }
+                else if(gameBoard.noRoom(e)) {
                     alert('Occupied!');
                 }
                 gameBoard.winner();
@@ -120,7 +147,8 @@ const game = (function(){
             counterX = 0;
             Display.updateScore(players.player1.getScore(), players.player2.getScore());
             gameBoard.resetFunct();
-            isWinner = false;
+            marker = players.player1.getSymb();
+            // isWinner = false;
         },
         callWinner: function(){
             if(counterX == 3 ){
@@ -129,6 +157,7 @@ const game = (function(){
                 players.player1.addPoint();
                 isWinner = true;
                 gameBoard.winReset();
+                return;
             }
             else if(counterO == 3){
                 // alert(players.player2.getName() + ' is a Wiener!');
@@ -136,6 +165,7 @@ const game = (function(){
                 players.player2.addPoint();
                 isWinner = true;
                 gameBoard.winReset();
+                return;
             }
             else{
                 counterO = 0;
@@ -211,6 +241,7 @@ const game = (function(){
     };
     gameBoard.playerTurns();
     gameBoard.resetButton();
+    // gameBoard.cpuTurn();
     return { gameBoard, players }
 })();
 
@@ -239,6 +270,7 @@ const eventControl = (function(){
     const p2Fields = document.querySelectorAll('.player2');
     let playCPU; 
     const george = document.querySelector('.george');
+    const cpumark = "C";
     
     const restoreP2 = () => {
         const p2NameReq = document.querySelector('.p2Name');
@@ -266,6 +298,7 @@ const eventControl = (function(){
         form.reset();
         restoreP2();
         george.style.display = "none";
+        game.players.player2cpu = false;
     });
     
     close.addEventListener('click', function(){
@@ -301,7 +334,6 @@ const eventControl = (function(){
         const formp2 = document.querySelector('.p2Name').value;
         let formp1mark = document.querySelector('.p1marker').value;
         let formp2mark = document.querySelector('.p2marker').value;
-        const cpumark = "C";
         
         if(!form.checkValidity()){
             form.reportValidity();
@@ -324,9 +356,14 @@ const eventControl = (function(){
         else{
             if(cpuCheck.checked){
                 formp2mark = "";
-                setPlayer(formp1, formp1mark, "George", "C");
+                setPlayer(formp1, formp1mark, "George", cpumark);
+                game.players.player2cpu = true;
+                modal.style.display = "none";
             }
-            else{setPlayer(formp1, formp1mark, formp2, formp2mark);}
+            else{
+                setPlayer(formp1, formp1mark, formp2, formp2mark);
+                modal.style.display = "none";
+            }
         }
         
     });
