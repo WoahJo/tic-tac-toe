@@ -69,6 +69,7 @@ const game = (function(){
                     blocks[i].children[j].style.color = "black";
                 }
             }
+            marker = players.player1.getSymb();
         },
         resetButton: function(){
             resetGame.addEventListener('click', function(){
@@ -95,16 +96,21 @@ const game = (function(){
             gameGrid.classList.toggle('p1turn');
         },
         cpuTurn: function(){
+            const spaces = [];
             const row = gameGrid.children;
             for(let i = 0; i < row.length; i++){
                 for(let j = 0; j < row[i].children.length; j++){
                     if(row[i].children[j].textContent == ""){
-                        row[i].children[j].click();
-                        row[i].children[j].textContent = marker;
-                        return;
+                        // row[i].children[j].click();
+                        // row[i].children[j].textContent = marker;
+                        // return;
+                        spaces.push(i, j);
                     }
                 }
             }
+            const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+            row[spaces[rando]].children[spaces[rando + 1]].click();
+            row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
         },
         playerTurns: function(){
             gameGrid.addEventListener('click', function(e){
@@ -113,13 +119,13 @@ const game = (function(){
                     alert('Press "New Game" and enter names.');
                     return false;
                 }
-                if((marker == players.player1.getSymb() && !gameBoard.noRoom(e))|| (gameGrid.classList.contains ('p1turn') && !gameBoard.noRoom(e))){
+                if((marker == players.player1.getSymb() && !gameBoard.noRoom(e))|| (gameGrid.classList.contains('p1turn') && !gameBoard.noRoom(e))){
                     marker = players.player1.getSymb();
                     gameBoard.turnChange(e);
                     e.target.style.color = "red";
                     marker = players.player2.getSymb();
                     gameBoard.winner();
-                    if(players.player2cpu == true && !isWinner){
+                    if(players.player2cpu == true && !gameGrid.classList.contains('p1turn')){
                         gameBoard.cpuTurn();
                         marker = players.player1.getSymb();
                         gameGrid.classList.toggle('p1turn');
