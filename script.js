@@ -57,193 +57,191 @@ const game = (function(){
             [one, two, three], 
             [four, five, six], 
             [seven, eight, nine]
-        ],
-        resetFunct: function(){
+        ]
+    };
+    const resetFunct = () => {
+        const blocks = gameGrid.children;
+        for(let i = 0; i < blocks.length; i++){
+            for(let j = 0; j < blocks[i].children.length; j++){
+                blocks[i].children[j].textContent = "";
+                blocks[i].children[j].style.color = "black";
+            }
+        }
+        marker = players.player1.getSymb();
+    };
+    const resetButton = () => {
+        resetGame.addEventListener('click', function(){
             if(!gameGrid.classList.contains('p1turn')){
                 gameGrid.classList.toggle('p1turn');
             }
-            const blocks = gameGrid.children;
-            for(let i = 0; i < blocks.length; i++){
-                for(let j = 0; j < blocks[i].children.length; j++){
-                    blocks[i].children[j].textContent = "";
-                    blocks[i].children[j].style.color = "black";
+            resetFunct();              
+        });
+    }
+    const noRoom = (e) => {
+        if(!e.target.textContent == ""){
+            return true;
+        }
+    };
+    const turnChange = (e)=> {
+        let square = e.target;
+        square.textContent = marker;
+        // for(let i = 0; i < gameBoard.field.length; i++){
+        //     let arrayCheck = gameBoard.field[i].indexOf(e.target);
+        //     if(arrayCheck > -1){
+        //         gameBoard.field[i][arrayCheck] = marker;
+        //     }
+        // }
+        gameGrid.classList.toggle('p1turn');
+    };
+    const cpuTurn = () => {
+        const spaces = [];
+        const row = gameGrid.children;
+        for(let i = 0; i < row.length; i++){
+            for(let j = 0; j < row[i].children.length; j++){
+                if(row[i].children[j].textContent == ""){
+                    spaces.push(i, j);
                 }
             }
-            marker = players.player1.getSymb();
-        },
-        resetButton: function(){
-            resetGame.addEventListener('click', function(){
-                if(!gameGrid.classList.contains('p1turn')){
+        }
+        const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+        row[spaces[rando]].children[spaces[rando + 1]].click();
+        row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+    };
+    const playerTurns =  () => {
+        gameGrid.addEventListener('click', function(e){
+            isWinner = false;
+            if(scoreboard.style.display == ""){
+                alert('Press "New Game" and enter names.');
+                return false;
+            }
+            if((marker == players.player1.getSymb() && !noRoom(e))|| (gameGrid.classList.contains('p1turn') && !noRoom(e))){
+                marker = players.player1.getSymb();
+                turnChange(e);
+                e.target.style.color = "red";
+                marker = players.player2.getSymb();
+                winner();
+                if(players.player2cpu == true && !gameGrid.classList.contains('p1turn')){
+                    cpuTurn();
+                    marker = players.player1.getSymb();
                     gameGrid.classList.toggle('p1turn');
+                    winner();
                 }
-                gameBoard.resetFunct();              
-            });
-        },
-        noRoom: function(e){
-            if(!e.target.textContent == ""){
-                return true;
+                
             }
-        },
-        turnChange: function(e){
-            let square = e.target;
-            square.textContent = marker;
-            // for(let i = 0; i < gameBoard.field.length; i++){
-            //     let arrayCheck = gameBoard.field[i].indexOf(e.target);
-            //     if(arrayCheck > -1){
-            //         gameBoard.field[i][arrayCheck] = marker;
-            //     }
-            // }
+            else if(marker == players.player2.getSymb() && !noRoom(e) && !players.player2cpu){
+                turnChange(e);
+                e.target.style.color = "blue";
+                marker = players.player1.getSymb();
+                winner();
+            }
+            else if(noRoom(e)) {
+                alert('Occupied!');
+            }
+        });
+    }; 
+    const winReset = () => {
+        counterO = 0;
+        counterX = 0;
+        Display.updateScore(players.player1.getScore(), players.player2.getScore());
+        // resetFunct();
+        marker = players.player1.getSymb();
+        if(!gameGrid.classList.contains('p1turn')){
             gameGrid.classList.toggle('p1turn');
-        },
-        cpuTurn: function(){
-            const spaces = [];
-            const row = gameGrid.children;
-            for(let i = 0; i < row.length; i++){
-                for(let j = 0; j < row[i].children.length; j++){
-                    if(row[i].children[j].textContent == ""){
-                        // row[i].children[j].click();
-                        // row[i].children[j].textContent = marker;
-                        // return;
-                        spaces.push(i, j);
-                    }
-                }
-            }
-            const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
-            row[spaces[rando]].children[spaces[rando + 1]].click();
-            row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
-        },
-        playerTurns: function(){
-            gameGrid.addEventListener('click', function(e){
-                isWinner = false;
-                if(scoreboard.style.display == ""){
-                    alert('Press "New Game" and enter names.');
-                    return false;
-                }
-                if((marker == players.player1.getSymb() && !gameBoard.noRoom(e))|| (gameGrid.classList.contains('p1turn') && !gameBoard.noRoom(e))){
-                    marker = players.player1.getSymb();
-                    gameBoard.turnChange(e);
-                    e.target.style.color = "red";
-                    marker = players.player2.getSymb();
-                    gameBoard.winner();
-                    if(players.player2cpu == true && !gameGrid.classList.contains('p1turn')){
-                        gameBoard.cpuTurn();
-                        marker = players.player1.getSymb();
-                        gameGrid.classList.toggle('p1turn');
-                    }
-                    
-                }
-                else if(marker == players.player2.getSymb() && !gameBoard.noRoom(e) && !players.player2cpu){
-                    gameBoard.turnChange(e);
-                    e.target.style.color = "blue";
-                    marker = players.player1.getSymb();
-                }
-                else if(gameBoard.noRoom(e)) {
-                    alert('Occupied!');
-                }
-                gameBoard.winner();
-            });
-        }, 
-        winReset: function(){
+        }
+        // isWinner = false;
+    };
+    const callWinner = () => {
+        if(counterX == 3 ){
+            // alert(players.player1.getName() + ' is a Wiener!');
+            Display.announceWinner(players.player1.getName());
+            players.player1.addPoint();
+            isWinner = true;
+            winReset();
+            return;
+        }
+        else if(counterO == 3){
+            // alert(players.player2.getName() + ' is a Wiener!');
+            Display.announceWinner(players.player2.getName());
+            players.player2.addPoint();
+            isWinner = true;
+            winReset();
+            return;
+        }
+        else{
             counterO = 0;
             counterX = 0;
-            Display.updateScore(players.player1.getScore(), players.player2.getScore());
-            gameBoard.resetFunct();
-            marker = players.player1.getSymb();
-            // isWinner = false;
-        },
-        callWinner: function(){
-            if(counterX == 3 ){
-                // alert(players.player1.getName() + ' is a Wiener!');
-                Display.announceWinner(players.player1.getName());
-                players.player1.addPoint();
-                isWinner = true;
-                gameBoard.winReset();
-                return;
-            }
-            else if(counterO == 3){
-                // alert(players.player2.getName() + ' is a Wiener!');
-                Display.announceWinner(players.player2.getName());
-                players.player2.addPoint();
-                isWinner = true;
-                gameBoard.winReset();
-                return;
-            }
-            else{
-                counterO = 0;
-                counterX = 0;
-            }
-        },
-        winner: function(){
-            const row = gameGrid.children; 
-            for(let i = 0; i < row.length; i++){
-                for(let j = 0; j < row[i].children.length; j++){
-                    if(row[i].children[j].textContent == players.player1.getSymb()){
-                        counterX ++; 
-                    }
-                    if(row[i].children[j].textContent == players.player2.getSymb()){
-                        counterO ++;
-                    }
-                }
-                gameBoard.callWinner();
-            }
-            for(let i = 0; i < row.length; i++){
-                for(let j = 0; j < row[i].children.length; j++){
-                    if(row[j].children[i].textContent == players.player1.getSymb()){
-                        counterX ++;
-                    }
-                    if(row[j].children[i].textContent == players.player2.getSymb()){
-                        counterO ++;
-                    }
-                }
-                gameBoard.callWinner();
-            }
-            for(let i = 0; i < row.length; i++){
-                if(row[i].children[i].textContent == players.player1.getSymb()){
-                    counterX ++;
-                }
-                if(row[i].children[i].textContent == players.player2.getSymb()){
-                    counterO ++;
-                }
-            }
-            gameBoard.callWinner();
-            
-            let i = 0;
-            let j = 2; 
-            while(i < 3 && j >= 0){
+        }
+    };
+    const winner = () => {
+        if(isWinner){return};
+        const row = gameGrid.children; 
+        for(let i = 0; i < row.length; i++){
+            for(let j = 0; j < row[i].children.length; j++){
                 if(row[i].children[j].textContent == players.player1.getSymb()){
-                    counterX ++;
+                    counterX ++; 
                 }
                 if(row[i].children[j].textContent == players.player2.getSymb()){
                     counterO ++;
                 }
-                i ++;
-                j --;
             }
-            gameBoard.callWinner();
-            
-            let tieCounter = 0;
-            for(let i = 0; i < row.length; i++){
-                for(let j = 0; j < row[i].children.length; j++){
-                    if(row[i].children[j].textContent == players.player1.getSymb()){
-                        tieCounter ++; 
-                    }
-                    if(row[i].children[j].textContent == players.player2.getSymb()){
-                        tieCounter ++;
-                    }
+            callWinner();
+        }
+        for(let i = 0; i < row.length; i++){
+            for(let j = 0; j < row[i].children.length; j++){
+                if(row[j].children[i].textContent == players.player1.getSymb()){
+                    counterX ++;
+                }
+                if(row[j].children[i].textContent == players.player2.getSymb()){
+                    counterO ++;
                 }
             }
-
-            if(tieCounter == 9 && !isWinner){
-                Display.announceTie();
-                gameBoard.winReset();
-            }
-            
+            callWinner();
         }
+        for(let i = 0; i < row.length; i++){
+            if(row[i].children[i].textContent == players.player1.getSymb()){
+                counterX ++;
+            }
+            if(row[i].children[i].textContent == players.player2.getSymb()){
+                counterO ++;
+            }
+        }
+        callWinner();
+        
+        let i = 0;
+        let j = 2; 
+        while(i < 3 && j >= 0){
+            if(row[i].children[j].textContent == players.player1.getSymb()){
+                counterX ++;
+            }
+            if(row[i].children[j].textContent == players.player2.getSymb()){
+                counterO ++;
+            }
+            i ++;
+            j --;
+        }
+        callWinner();
+        
+        let tieCounter = 0;
+        for(let i = 0; i < row.length; i++){
+            for(let j = 0; j < row[i].children.length; j++){
+                if(row[i].children[j].textContent == players.player1.getSymb()){
+                    tieCounter ++; 
+                }
+                if(row[i].children[j].textContent == players.player2.getSymb()){
+                    tieCounter ++;
+                }
+            }
+        }
+
+        if(tieCounter == 9 && !isWinner){
+            Display.announceTie();
+            winReset();
+        }
+        
     };
-    gameBoard.playerTurns();
-    gameBoard.resetButton();
-    // gameBoard.cpuTurn();
-    return { gameBoard, players }
+    playerTurns();
+    resetButton();
+    return{ gameBoard, players, resetFunct }
 })();
 
 const createPlayer = (playerName, playerSymbol) => {
@@ -311,6 +309,8 @@ const eventControl = (function(){
     
     closeAnnounce.addEventListener('click', function(){
         announce.style.display = "none";
+        game.resetFunct();
+
     });
     
     cpuCheck.addEventListener('click', function(){
