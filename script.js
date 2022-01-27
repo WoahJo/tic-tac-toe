@@ -94,18 +94,83 @@ const game = (function(){
         gameGrid.classList.toggle('p1turn');
     };
     const cpuTurn = () => {
-        const spaces = [];
-        const row = gameGrid.children;
+        // const spaces = [];
+        // const row = gameGrid.children;
+        // for(let i = 0; i < row.length; i++){
+        //     for(let j = 0; j < row[i].children.length; j++){
+        //         if(row[i].children[j].textContent == ""){
+        //             spaces.push(i, j);
+        //         }
+        //     }
+        // }
+        // const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+        // row[spaces[rando]].children[spaces[rando + 1]].click();
+        // row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+        const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
+        const cpuMoves = [];
+        const p1Moves = [];
+        const toString = (a, b) => {
+            return ('' + a + b);
+        };
+        const row = gameGrid.children; 
         for(let i = 0; i < row.length; i++){
             for(let j = 0; j < row[i].children.length; j++){
-                if(row[i].children[j].textContent == ""){
-                    spaces.push(i, j);
+                if(row[i].children[j].textContent == players.player1.getSymb()){
+                    const toP1Moves = toString(i, j);
+                    p1Moves.push(toP1Moves);
+                }
+                else if (row[i].children[j].textContent == players.player2.getSymb()){
+                    const toCpuMoves = toString(i,j);
+                    cpuMoves.push(toCpuMoves); 
                 }
             }
         }
-        const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
-        row[spaces[rando]].children[spaces[rando + 1]].click();
-        row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+
+        const takenSpaces = p1Moves.concat(cpuMoves);
+        const freeSpaces = legalMoves.filter((obj)=> {
+            return takenSpaces.indexOf(obj) === -1;
+        });
+
+        //Go through the free spaces and check surrounding marks
+        //if a space is surrounded by cpu mark then it will place a mark
+        //if a space is surrounded by p1 mark it will place a mark
+        //else it will randomly mark
+        const p1Mark = players.player1.getSymb();
+        for(let i = 0; i < freeSpaces.length -1; i++){
+            const cpuPlace = () => {
+            row[rowNum].children[columnNum].click();
+                row[rowNum].children[columnNum].textContent = marker;
+            };
+            const rowNum = Number(freeSpaces[i][0]);
+            const columnNum = Number(freeSpaces[i][1]);
+
+            if(rowNum === 1){
+                //check for surrounding marks
+                if((row[rowNum + 1].children[columnNum].textContent === p1Mark && row[rowNum - 1].children[columnNum].textContent === p1Mark)|| (row[rowNum + 1].children[columnNum].textContent === 'C' && row[rowNum - 1].children[columnNum].textContent === 'C')){
+                    cpuPlace();
+                    break;
+                }
+                else{continue;}
+            }
+            else if (columnNum === 1){
+                //check both sides for cpu and player marks 
+                if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum - 1].textContent === p1Mark)|| (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum - 1].textContent === 'C')){
+                    row[rowNum].children[columnNum].click();
+                    row[rowNum].children[columnNum].textContent = marker;
+                    break;
+                }
+                else{continue;}
+            }
+
+            else {
+                cpuPlace();
+                break;
+            }
+        };
+
+        marker = players.player1.getSymb();
+        gameGrid.classList.toggle('p1turn');
+        winner();
     };
     const playerTurns =  () => {
         gameGrid.addEventListener('click', function(e){
@@ -121,10 +186,8 @@ const game = (function(){
                 marker = players.player2.getSymb();
                 winner();
                 if(players.player2cpu == true && !gameGrid.classList.contains('p1turn')){
-                    cpuTurn();
-                    marker = players.player1.getSymb();
-                    gameGrid.classList.toggle('p1turn');
-                    winner();
+                    // cpuTurn();
+                    setTimeout(cpuTurn, 1000);
                 }
                 
             }
