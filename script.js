@@ -94,79 +94,141 @@ const game = (function(){
         gameGrid.classList.toggle('p1turn');
     };
     const cpuTurn = () => {
-        // const spaces = [];
-        // const row = gameGrid.children;
-        // for(let i = 0; i < row.length; i++){
-        //     for(let j = 0; j < row[i].children.length; j++){
-        //         if(row[i].children[j].textContent == ""){
-        //             spaces.push(i, j);
-        //         }
-        //     }
-        // }
-        // const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
-        // row[spaces[rando]].children[spaces[rando + 1]].click();
-        // row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
-        const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
-        const cpuMoves = [];
-        const p1Moves = [];
-        const toString = (a, b) => {
-            return ('' + a + b);
-        };
-        const row = gameGrid.children; 
+        const spaces = [];
+        const row = gameGrid.children;
         for(let i = 0; i < row.length; i++){
             for(let j = 0; j < row[i].children.length; j++){
-                if(row[i].children[j].textContent == players.player1.getSymb()){
-                    const toP1Moves = toString(i, j);
-                    p1Moves.push(toP1Moves);
-                }
-                else if (row[i].children[j].textContent == players.player2.getSymb()){
-                    const toCpuMoves = toString(i,j);
-                    cpuMoves.push(toCpuMoves); 
+                if(row[i].children[j].textContent == ""){
+                    spaces.push(i, j);
                 }
             }
         }
+        const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+        row[spaces[rando]].children[spaces[rando + 1]].click();
+        row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+        
+        //------------New Idea Below---------------
+        // const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
+        // const leftVertWin = ['00', '10', '20'];
+        // const midVertWin = ['01', '11', '21'];
+        // const rightVertWin = ['02', '12', '22'];
+        // const topHorWin = ['00', '01', '02'];
+        // const midHorWin = ['10', '11', '12'];
+        // const bottHortWin = ['20', '21', '22'];
+        // const lrDiagWin = ['00', '11', '22'];
+        // const rlDiagWin = ['02', '11', '20'];
+        // const cpuMoves = [];
+        // const p1Moves = [];
+        // const toString = (a, b) => {
+        //     return ('' + a + b);
+        // };
+        // //goes through and gathers player and cpu moves
+        // const row = gameGrid.children; 
+        // for(let i = 0; i < row.length; i++){
+        //     for(let j = 0; j < row[i].children.length; j++){
+        //         if(row[i].children[j].textContent == players.player1.getSymb()){
+        //             const toP1Moves = toString(i, j);
+        //             p1Moves.push(toP1Moves);
+        //         }
+        //         else if (row[i].children[j].textContent == players.player2.getSymb()){
+        //             const toCpuMoves = toString(i,j);
+        //             cpuMoves.push(toCpuMoves); 
+        //         }
+        //     }
+        // }
+    
+        // const takenSpaces = p1Moves.concat(cpuMoves);
+        // const freeSpaces = legalMoves.filter((obj)=> {
+        //     return takenSpaces.indexOf(obj) === -1;
+        // });
 
-        const takenSpaces = p1Moves.concat(cpuMoves);
-        const freeSpaces = legalMoves.filter((obj)=> {
-            return takenSpaces.indexOf(obj) === -1;
-        });
+        // if(freespace > 7){
+        //     if [1][1] is free - place;
+        //     else if a corner is free - place;
+        // }
 
-        //Go through the free spaces and check surrounding marks
-        //if a space is surrounded by cpu mark then it will place a mark
-        //if a space is surrounded by p1 mark it will place a mark
-        //else it will randomly mark
-        const p1Mark = players.player1.getSymb();
-        for(let i = 0; i < freeSpaces.length -1; i++){
-            const cpuPlace = () => {
-            row[rowNum].children[columnNum].click();
-                row[rowNum].children[columnNum].textContent = marker;
-            };
-            const rowNum = Number(freeSpaces[i][0]);
-            const columnNum = Number(freeSpaces[i][1]);
+        // const emptyLV = compare p1moves with lvwin 
+        // const emptymvwin = compare p1 moves with the win
+        // so on and so... 
+        // if(emptyLV... length == 1 && freespace < 6){
+        //     place;
+        // }
+        // else if (emptywinmoves length == 2){
+        //     place;
+        // }
+        
+        //-------------Other idea below--------------------
+        // const p1Mark = players.player1.getSymb();
+        // for(let i = 0; i < freeSpaces.length; i++){
+        //     const cpuPlace = () => {
+        //     row[rowNum].children[columnNum].click();
+        //         row[rowNum].children[columnNum].textContent = marker;
+        //     };
+        //     const rowNum = Number(freeSpaces[i][0]);
+        //     const columnNum = Number(freeSpaces[i][1]);
 
-            if(rowNum === 1){
-                //check for surrounding marks
-                if((row[rowNum + 1].children[columnNum].textContent === p1Mark && row[rowNum - 1].children[columnNum].textContent === p1Mark)|| (row[rowNum + 1].children[columnNum].textContent === 'C' && row[rowNum - 1].children[columnNum].textContent === 'C')){
-                    cpuPlace();
-                    break;
-                }
-                else{continue;}
-            }
-            else if (columnNum === 1){
-                //check both sides for cpu and player marks 
-                if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum - 1].textContent === p1Mark)|| (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum - 1].textContent === 'C')){
-                    row[rowNum].children[columnNum].click();
-                    row[rowNum].children[columnNum].textContent = marker;
-                    break;
-                }
-                else{continue;}
-            }
+        //     if(freeSpaces.length == 8 && freeSpaces.indexOf('11') != -1 ){
+        //         row[1].children[1].click();                
+        //         row[1].children[1].textContent = marker;
+        //         break;                
+        //     }
 
-            else {
-                cpuPlace();
-                break;
-            }
-        };
+        //     if(rowNum === 1){
+        //         //check for surrounding marks
+        //         if((row[rowNum + 1].children[columnNum].textContent === p1Mark && row[rowNum - 1].children[columnNum].textContent === p1Mark)|| (row[rowNum + 1].children[columnNum].textContent === 'C' && row[rowNum - 1].children[columnNum].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+        //     }
+        //     else if (columnNum === 1){
+        //         //check both sides of the middle column for cpu and player marks 
+        //         if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum - 1].textContent === p1Mark)|| (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum - 1].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+                
+        //     }
+
+        //     else if (columnNum === 0){
+        //         if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum + 2].textContent === p1Mark) || (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum + 2].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+        //     }
+
+        //     else if(columnNum === 2){
+        //         if((row[rowNum].children[columnNum - 1].textContent === p1Mark && row[rowNum].children[columnNum - 2].textContent === p1Mark) || (row[rowNum].children[columnNum - 1].textContent === 'C' && row[rowNum].children[columnNum - 2].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+        //     }
+
+        //     else if(columnNum === 2 || columnNum === 0) {
+        //         //checks to see if the vertical spaces afterwards are occupied with user or 
+        //         //cpu markers
+        //         if((rowNum === 0 && row[rowNum + 1].children[columnNum].textContent === p1Mark && rowNum === 0 && row[rowNum + 2].children[columnNum].textContent === p1Mark) || (rowNum === 0 && row[rowNum + 1].children[columnNum].textContent === 'C' && rowNum === 0 && row[rowNum + 2].children[columnNum].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+        //         if((rowNum === 2 && row[rowNum - 1].children[columnNum].textContent === p1Mark && row[rowNum - 2].children[columnNum].textContent === p1Mark) || (rowNum === 2 && row[rowNum - 1].children[columnNum].textContent === 'C' && row[rowNum - 2].children[columnNum].textContent === 'C')){ 
+        //             cpuPlace();
+        //             break;
+        //         }
+        //         if((rowNum === 1 && row[rowNum - 1].children[columnNum].textContent === p1Mark && row[rowNum + 1].children[columnNum].textContent === p1Mark) || (rowNum === 1 && row[rowNum - 1].children[columnNum].textContent === 'C' && row[rowNum + 1].children[columnNum].textContent === 'C')){
+        //             cpuPlace();
+        //             break;
+        //         }
+                
+        //     }
+        //     else if (i == freeSpaces.length){
+        //         const rando = Math.floor(Math.random() * freeSpaces.length - 1);
+        //         const x = freeSpaces[rando][0];
+        //         const y = freeSpaces[rando][1];
+        //         row[x].children[y].click();
+        //         row[x].children[y].textContent = marker;
+        //         break;
+        //     }
+        // };
 
         marker = players.player1.getSymb();
         gameGrid.classList.toggle('p1turn');
@@ -182,7 +244,7 @@ const game = (function(){
             if((marker == players.player1.getSymb() && !noRoom(e))|| (gameGrid.classList.contains('p1turn') && !noRoom(e))){
                 marker = players.player1.getSymb();
                 turnChange(e);
-                e.target.style.color = "red";
+                e.target.style.color = "#d77770";
                 marker = players.player2.getSymb();
                 winner();
                 if(players.player2cpu == true && !gameGrid.classList.contains('p1turn')){
@@ -193,7 +255,7 @@ const game = (function(){
             }
             else if(marker == players.player2.getSymb() && !noRoom(e) && !players.player2cpu){
                 turnChange(e);
-                e.target.style.color = "blue";
+                e.target.style.color = "#63595c";
                 marker = players.player1.getSymb();
                 winner();
             }
@@ -422,10 +484,12 @@ const eventControl = (function(){
                 formp2mark = "";
                 setPlayer(formp1, formp1mark, "George", cpumark);
                 game.players.player2cpu = true;
+                game.resetFunct();
                 modal.style.display = "none";
             }
             else{
                 setPlayer(formp1, formp1mark, formp2, formp2mark);
+                game.resetFunct();
                 modal.style.display = "none";
             }
         }
