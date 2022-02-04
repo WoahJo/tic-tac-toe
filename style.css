@@ -161,6 +161,7 @@ body {
     row-gap: 10px;
     font-size: 1.2rem;
     box-shadow: 0 5px 10px 0 rgba(47, 47, 48, 0.616), 0 5px 20px 0 rgb(47, 47, 48);
+    border-radius: 7px;
 }
 
 .required { 
