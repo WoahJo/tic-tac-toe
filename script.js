@@ -20,7 +20,6 @@ const Display = (function(){
     const announceWinner = (player) => {
         announceText.textContent = player + " wins!";
         announce.style.display = "block";
-
     }
     const announceTie = () => {
         announceText.textContent = "It's a tie.";
@@ -455,7 +454,6 @@ const eventControl = (function(){
     });
     
     sub.addEventListener('click', function(){
-        scoreboard.style.display = "flex";
         const formp1 = document.querySelector('.p1Name').value;
         const formp2 = document.querySelector('.p2Name').value;
         let formp1mark = document.querySelector('.p1marker').value;
@@ -481,6 +479,7 @@ const eventControl = (function(){
         }
         else{
             if(cpuCheck.checked){
+                scoreboard.style.display = "flex";
                 formp2mark = "";
                 setPlayer(formp1, formp1mark, "George", cpumark);
                 game.players.player2cpu = true;
@@ -488,6 +487,7 @@ const eventControl = (function(){
                 modal.style.display = "none";
             }
             else{
+                scoreboard.style.display = "flex";
                 setPlayer(formp1, formp1mark, formp2, formp2mark);
                 game.resetFunct();
                 modal.style.display = "none";

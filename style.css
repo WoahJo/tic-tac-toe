@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
 body, html {
     /* height: 100%; */
@@ -34,8 +35,9 @@ body {
 }
 
 .title {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: #555479;
+    font-family: 'Quicksand', sans-serif;
 }
 
 .description {
@@ -61,7 +63,7 @@ body {
 }
 
 .reset {
-    background-color: #9b8289;
+    background-color: #d77770;
     color: white;
 }
 
@@ -125,14 +127,16 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    background-color: white;   
+    justify-content: space-around;  
     align-items: center;
     margin: auto;
     width: 35%; 
-    font-size: 2rem; 
+    font-size: 3rem; 
     box-shadow: 0 5px 10px 0 rgba(47, 47, 48, 0.616), 0 5px 20px 0 rgb(47, 47, 48);
-    padding: 20px;
+    padding: 30px;
+    color: #34344a;
+    background-color: #e8f1f1; /*#9b8289*/
+    font-family: 'Quicksand', sans-serif;
 }
 .close {
     display: flex;
@@ -150,7 +154,7 @@ body {
     flex-direction: row;
     justify-content: space-around;
     align-items: flex-start;
-    background-color: white;
+    background-color: #dfe5e8;
     margin: auto;
     padding: 20px;
     width: 53%;
@@ -209,7 +213,19 @@ body {
 
 .fButton {
     height: 40px;
-    width: 80px;
+    width: 110px;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.subForm {
+    background-color: #27b063; /* #42b976; */
+}
+
+.cancelForm {
+    background-color: #ee4e4e;
 }
 
 .scoreboard{
