@@ -93,18 +93,77 @@ const game = (function(){
         gameGrid.classList.toggle('p1turn');
     };
     const cpuTurn = () => {
-        const spaces = [];
+        const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
+        const winMoves = [
+            ['00', '01', '02'], //Horizontal top
+            ['10', '11', '12'], //Horizontal mid
+            ['20', '21', '22'], //Horizontal bottom 
+            ['00', '10', '20'], //Vertical left
+            ['01', '11', '21'], //Vertical mid
+            ['02', '12', '22'], //Vertical right
+            ['00', '11', '22'], //Diagonal l2r
+            ['02', '11', '20'] //Diagonal r2l
+        ];
+
+        const p1Moves = [];
+        const cpuMoves = [];
+        const toString = (a, b) => {
+            return '' + a + b;
+        }
+        const takenMoves = [];
         const row = gameGrid.children;
-        for(let i = 0; i < row.length; i++){
-            for(let j = 0; j < row[i].children.length; j++){
-                if(row[i].children[j].textContent == ""){
-                    spaces.push(i, j);
+        for(let i = 0; i < winMoves.length; i++){
+            let marked = false;
+            let p1Spot = 0;
+            let cpuSpot = 0;
+            const emptySpace = [];
+            for(let j = 0; j < winMoves[i].length; j++){
+                const targetSquare = row[winMoves[i][j][0]].children[winMoves[i][j][1]];
+                if(targetSquare.textContent == players.player1.getSymb()){
+                    p1Spot ++; 
+                }
+                else if (targetSquare.textContent == 'C'){
+                    cpuSpot ++; 
+                }
+                else if (targetSquare.textContent == ""){
+                    emptySpace.push(toString(winMoves[i][j][0], winMoves[i][j][1]));
                 }
             }
+            if(p1Spot === 2 && emptySpace.length === 1 || cpuSpot === 2 && emptySpace.length === 1){
+                row[emptySpace[0][0]].children[emptySpace[0][1]].click();                
+                row[emptySpace[0][0]].children[emptySpace[0][1]].textContent = marker; 
+                marked = true;
+                break;               
+            }
+            else if (i === winMoves.length - 1 && !marked){
+                const spaces = [];
+                for(let i = 0; i < row.length; i++){
+                    for(let j = 0; j < row[i].children.length; j++){
+                        if(row[i].children[j].textContent == ""){
+                        spaces.push(i, j);
+                        }
+                    }
+                
+                }
+                const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+                row[spaces[rando]].children[spaces[rando + 1]].click();
+                row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+            }
         }
-        const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
-        row[spaces[rando]].children[spaces[rando + 1]].click();
-        row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
+
+        //--------Original Rando Pick-------------
+        // const spaces = [];
+        // const row = gameGrid.children;
+        // for(let i = 0; i < row.length; i++){
+        //     for(let j = 0; j < row[i].children.length; j++){
+        //         if(row[i].children[j].textContent == ""){
+        //             spaces.push(i, j);
+        //         }
+        //     }
+        // }
+        // const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
+        // row[spaces[rando]].children[spaces[rando + 1]].click();
+        // row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
         
         //------------New Idea Below---------------
         // const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
