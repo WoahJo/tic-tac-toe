@@ -9,7 +9,7 @@ Try it out [here](https://woahjo.github.io/tic-tac-toe/)!
   
 ![Starting a new game](images/TTT.png)  
   
-The game will not begin without entering the player(s) name(s). To do this, click on the `New Game` button located below the introduction.  
+The game will not begin without entering the name(s) of the player(s). To do this, click on the `New Game` button located below the introduction.  
   
 ### Enter your name(s) and custom marker(s)  
   
