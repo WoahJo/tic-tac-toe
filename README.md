@@ -14,7 +14,7 @@ The game will not begin without entering the player(s) name(s). To do this, clic
   
 ![New game menu](images/ttt-newMenu.png)  
   
-When you click the `New Game` button below the introduction, it brings up a menu that allows you to enter your and a friend's name and a custom marker for each. If you chose not to enter a custom maker, player 1's default marker is 'x' and player 2's is 'o'. Players cannot use the same exact marker, meaning two players can use 'k' as long as one uses a capitalized version. Should the players choose the same marker, the form will not submit and will notify players that their markers must be different.   
+When you click the `New Game` button below the introduction, it brings up a menu that allows you to enter your and a friend's name and a custom marker for each. If you chose not to enter a custom marker, player 1's default marker is 'x' and player 2's is 'o'. Players cannot use the same exact marker, meaning two players can use 'k' as long as one uses a capitalized version. Should the players choose the same marker, the form will not submit and will notify players that their markers must be different.   
   
 ### Play against a computer  
   
