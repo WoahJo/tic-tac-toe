@@ -1,6 +1,7 @@
 # Tic-Tac-Toe  
   
 Play a few rounds of Tic-Tac-Toe against a friend or play against a computer player.  
+Try it out [here](https://woahjo.github.io/tic-tac-toe/)!  
   
 ## Features  
   
