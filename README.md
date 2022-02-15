@@ -8,7 +8,7 @@ Play a few rounds of Tic-Tac-Toe against a friend or play against a computer pla
   
 ![Starting a new game](images/TTT.png)  
   
-The gmae will not begin without entering the player(s) name(s) and marker(s). To do this, click on the `New Game` button located below the introduction.  
+The game will not begin without entering the player(s) name(s). To do this, click on the `New Game` button located below the introduction.  
   
 ### Enter your name(s) and custom marker(s)  
   
