@@ -84,12 +84,6 @@ const game = (function(){
     const turnChange = (e)=> {
         let square = e.target;
         square.textContent = marker;
-        // for(let i = 0; i < gameBoard.field.length; i++){
-        //     let arrayCheck = gameBoard.field[i].indexOf(e.target);
-        //     if(arrayCheck > -1){
-        //         gameBoard.field[i][arrayCheck] = marker;
-        //     }
-        // }
         gameGrid.classList.toggle('p1turn');
     };
     const cpuTurn = () => {
@@ -151,143 +145,6 @@ const game = (function(){
             }
         }
 
-        //--------Original Rando Pick-------------
-        // const spaces = [];
-        // const row = gameGrid.children;
-        // for(let i = 0; i < row.length; i++){
-        //     for(let j = 0; j < row[i].children.length; j++){
-        //         if(row[i].children[j].textContent == ""){
-        //             spaces.push(i, j);
-        //         }
-        //     }
-        // }
-        // const rando = Math.floor(Math.random() * ((spaces.length*0.5) - 2)) * 2;
-        // row[spaces[rando]].children[spaces[rando + 1]].click();
-        // row[spaces[rando]].children[spaces[rando + 1]].textContent = marker;
-        
-        //------------New Idea Below---------------
-        // const legalMoves = ['00', '01', '02', '10', '11', '12', '20', '21', '22'];
-        // const leftVertWin = ['00', '10', '20'];
-        // const midVertWin = ['01', '11', '21'];
-        // const rightVertWin = ['02', '12', '22'];
-        // const topHorWin = ['00', '01', '02'];
-        // const midHorWin = ['10', '11', '12'];
-        // const bottHortWin = ['20', '21', '22'];
-        // const lrDiagWin = ['00', '11', '22'];
-        // const rlDiagWin = ['02', '11', '20'];
-        // const cpuMoves = [];
-        // const p1Moves = [];
-        // const toString = (a, b) => {
-        //     return ('' + a + b);
-        // };
-        // //goes through and gathers player and cpu moves
-        // const row = gameGrid.children; 
-        // for(let i = 0; i < row.length; i++){
-        //     for(let j = 0; j < row[i].children.length; j++){
-        //         if(row[i].children[j].textContent == players.player1.getSymb()){
-        //             const toP1Moves = toString(i, j);
-        //             p1Moves.push(toP1Moves);
-        //         }
-        //         else if (row[i].children[j].textContent == players.player2.getSymb()){
-        //             const toCpuMoves = toString(i,j);
-        //             cpuMoves.push(toCpuMoves); 
-        //         }
-        //     }
-        // }
-    
-        // const takenSpaces = p1Moves.concat(cpuMoves);
-        // const freeSpaces = legalMoves.filter((obj)=> {
-        //     return takenSpaces.indexOf(obj) === -1;
-        // });
-
-        // if(freespace > 7){
-        //     if [1][1] is free - place;
-        //     else if a corner is free - place;
-        // }
-
-        // const emptyLV = compare p1moves with lvwin 
-        // const emptymvwin = compare p1 moves with the win
-        // so on and so... 
-        // if(emptyLV... length == 1 && freespace < 6){
-        //     place;
-        // }
-        // else if (emptywinmoves length == 2){
-        //     place;
-        // }
-        
-        //-------------Other idea below--------------------
-        // const p1Mark = players.player1.getSymb();
-        // for(let i = 0; i < freeSpaces.length; i++){
-        //     const cpuPlace = () => {
-        //     row[rowNum].children[columnNum].click();
-        //         row[rowNum].children[columnNum].textContent = marker;
-        //     };
-        //     const rowNum = Number(freeSpaces[i][0]);
-        //     const columnNum = Number(freeSpaces[i][1]);
-
-        //     if(freeSpaces.length == 8 && freeSpaces.indexOf('11') != -1 ){
-        //         row[1].children[1].click();                
-        //         row[1].children[1].textContent = marker;
-        //         break;                
-        //     }
-
-        //     if(rowNum === 1){
-        //         //check for surrounding marks
-        //         if((row[rowNum + 1].children[columnNum].textContent === p1Mark && row[rowNum - 1].children[columnNum].textContent === p1Mark)|| (row[rowNum + 1].children[columnNum].textContent === 'C' && row[rowNum - 1].children[columnNum].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-        //     }
-        //     else if (columnNum === 1){
-        //         //check both sides of the middle column for cpu and player marks 
-        //         if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum - 1].textContent === p1Mark)|| (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum - 1].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-                
-        //     }
-
-        //     else if (columnNum === 0){
-        //         if((row[rowNum].children[columnNum + 1].textContent === p1Mark && row[rowNum].children[columnNum + 2].textContent === p1Mark) || (row[rowNum].children[columnNum + 1].textContent === 'C' && row[rowNum].children[columnNum + 2].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-        //     }
-
-        //     else if(columnNum === 2){
-        //         if((row[rowNum].children[columnNum - 1].textContent === p1Mark && row[rowNum].children[columnNum - 2].textContent === p1Mark) || (row[rowNum].children[columnNum - 1].textContent === 'C' && row[rowNum].children[columnNum - 2].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-        //     }
-
-        //     else if(columnNum === 2 || columnNum === 0) {
-        //         //checks to see if the vertical spaces afterwards are occupied with user or 
-        //         //cpu markers
-        //         if((rowNum === 0 && row[rowNum + 1].children[columnNum].textContent === p1Mark && rowNum === 0 && row[rowNum + 2].children[columnNum].textContent === p1Mark) || (rowNum === 0 && row[rowNum + 1].children[columnNum].textContent === 'C' && rowNum === 0 && row[rowNum + 2].children[columnNum].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-        //         if((rowNum === 2 && row[rowNum - 1].children[columnNum].textContent === p1Mark && row[rowNum - 2].children[columnNum].textContent === p1Mark) || (rowNum === 2 && row[rowNum - 1].children[columnNum].textContent === 'C' && row[rowNum - 2].children[columnNum].textContent === 'C')){ 
-        //             cpuPlace();
-        //             break;
-        //         }
-        //         if((rowNum === 1 && row[rowNum - 1].children[columnNum].textContent === p1Mark && row[rowNum + 1].children[columnNum].textContent === p1Mark) || (rowNum === 1 && row[rowNum - 1].children[columnNum].textContent === 'C' && row[rowNum + 1].children[columnNum].textContent === 'C')){
-        //             cpuPlace();
-        //             break;
-        //         }
-                
-        //     }
-        //     else if (i == freeSpaces.length){
-        //         const rando = Math.floor(Math.random() * freeSpaces.length - 1);
-        //         const x = freeSpaces[rando][0];
-        //         const y = freeSpaces[rando][1];
-        //         row[x].children[y].click();
-        //         row[x].children[y].textContent = marker;
-        //         break;
-        //     }
-        // };
-
         marker = players.player1.getSymb();
         gameGrid.classList.toggle('p1turn');
         winner();
@@ -326,16 +183,13 @@ const game = (function(){
         counterO = 0;
         counterX = 0;
         Display.updateScore(players.player1.getScore(), players.player2.getScore());
-        // resetFunct();
         marker = players.player1.getSymb();
         if(!gameGrid.classList.contains('p1turn')){
             gameGrid.classList.toggle('p1turn');
         }
-        // isWinner = false;
     };
     const callWinner = () => {
         if(counterX == 3 ){
-            // alert(players.player1.getName() + ' is a Wiener!');
             Display.announceWinner(players.player1.getName());
             players.player1.addPoint();
             isWinner = true;
@@ -343,7 +197,6 @@ const game = (function(){
             return;
         }
         else if(counterO == 3){
-            // alert(players.player2.getName() + ' is a Wiener!');
             Display.announceWinner(players.player2.getName());
             players.player2.addPoint();
             isWinner = true;
